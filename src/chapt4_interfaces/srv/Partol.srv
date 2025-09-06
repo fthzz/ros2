@@ -1,0 +1,7 @@
+float32 target_x
+float32 target_y
+---
+int8 SUCCESS = 1 #宏定义
+int8 FAIL = 0
+int8 result #SUCCESS FAIL取其一
+
