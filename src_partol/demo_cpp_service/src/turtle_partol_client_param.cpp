@@ -21,6 +21,10 @@ public:
         timer_ = this->create_wall_timer(5s, [&] () -> void {
             while (!client_->wait_for_service(1s)){
                 RCLCPP_WARN(this->get_logger(),"等待服务端启动...");
+                if (!rclcpp::ok()){
+                    RCLCPP_ERROR(this->get_logger(),"中断等待服务端");
+                    return;
+                }
             }
             auto request = std::make_shared<Partol::Request>();
             request->target_x = rand() % 11; //0-10
@@ -43,6 +47,10 @@ public:
         auto param_client = this->create_client<SetParameters>("set_parameters");
         while (!param_client->wait_for_service(1s)){
             RCLCPP_WARN(this->get_logger(),"等待服务端启动...");
+            if (!rclcpp::ok()){
+                RCLCPP_ERROR(this->get_logger(),"中断等待服务端");
+                return nullptr;
+            }
         }
         auto request = std::make_shared<SetParameters::Request>();
         request->parameters.push_back(param); //这个parameters是一个vector，这个操作是把参数加入vector
