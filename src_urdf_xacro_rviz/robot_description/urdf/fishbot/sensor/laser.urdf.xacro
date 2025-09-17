@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro='http://www.ros.org/wiki/xacro' >
+    <!-- 引入惯性计算的xacro文件 -->
+    <xacro:include filename="$(find robot_description)/urdf/fishbot/common_inertia.xacro"/>
+    <xacro:macro name="laser_xacro" params="xyz">
+    
+        <!-- 雷达支撑杆 -->
+        <link name="laser_cylinder_link">
+            <!-- 部件的外观描述 -->
+            <visual>
+                <!-- 基于本身几何中心的偏移量和旋转量 -->
+                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+
+                <!-- 形状 -->
+                <geometry>
+                    <cylinder radius="0.01"  length="0.10"/>
+                </geometry>
+
+                <!-- 颜色 -->
+                <material name="black">
+                    <!-- 最后一个值是透明度，1表示不透明 -->
+                    <color rgba="0 0 0 1"/>
+                </material>
+            </visual>
+
+            <collision>
+                <!-- 基于本身几何中心的偏移量和旋转量 -->
+                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+
+                <!-- 形状 -->
+                <geometry>
+                    <cylinder radius="0.01"  length="0.10"/>
+                </geometry>
+
+                <!-- 颜色 -->
+                <material name="black">
+                    <!-- 最后一个值是透明度，1表示不透明 -->
+                    <color rgba="0 0 0 1"/>
+                </material>
+            </collision>
+            <xacro:cylinder_inertia m="0.05" r="0.01" h="0.10" />
+        </link>
+
+        <link name="laser_link">
+            <!-- 部件的外观描述 -->
+            <visual>
+                <!-- 基于本身几何中心的偏移量和旋转量 -->
+                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+
+                <!-- 形状 -->
+                <geometry>
+                    <cylinder radius="0.02"  length="0.02"/>
+                </geometry>
+
+                <!-- 颜色 -->
+                <material name="black">
+                    <!-- 最后一个值是透明度，1表示不透明 -->
+                    <color rgba="0 0 0 1"/>
+                </material>
+            </visual>
+
+            <collision>
+                 <!-- 基于本身几何中心的偏移量和旋转量 -->
+                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+
+                <!-- 形状 -->
+                <geometry>
+                    <cylinder radius="0.02"  length="0.02"/>
+                </geometry>
+
+                <!-- 颜色 -->
+                <material name="black">
+                    <!-- 最后一个值是透明度，1表示不透明 -->
+                    <color rgba="0 0 0 1"/>
+                </material>
+            </collision>
+            <xacro:cylinder_inertia m="0.10" r="0.02" h="0.02" />
+        </link>
+
+
+        <!-- 雷达固定到支撑杆上 -->
+        <joint name="laser_joint" type="fixed">
+            <!-- 连接的父部件 -->
+            <parent link="laser_cylinder_link"/>
+            <!-- 连接的子部件 -->
+            <child link="laser_link"/>
+            <!-- 基于父部件的偏移量和旋转量 -->
+            <origin xyz="0.0 0.0 0.05" rpy="0.0 0.0 0.0"/>
+        </joint>
+
+        <!-- 支撑杆固定到base上 -->
+        <joint name="laser_cylinder_joint" type="fixed">
+            <!-- 连接的父部件 -->
+            <parent link="base_link"/>
+            <!-- 连接的子部件 -->
+            <child link="laser_cylinder_link"/>
+            <!-- 基于父部件的偏移量和旋转量 -->
+            <origin xyz="${xyz}" rpy="0.0 0.0 0.0"/>
+        </joint>
+    
+    </xacro:macro>
+
+</robot>
