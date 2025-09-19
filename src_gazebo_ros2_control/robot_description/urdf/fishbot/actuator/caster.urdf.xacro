@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro='http://www.ros.org/wiki/xacro' >
+    <!-- 引入惯性计算的xacro文件 -->
+    <xacro:include filename="$(find robot_description)/urdf/fishbot/common_inertia.xacro"/>
+    <xacro:macro name="caster_xacro" params="caster_name xyz">
+        <!-- imu子部件 -->
+        <link name="${caster_name}_link">
+            <!-- 部件的外观描述 -->
+            <visual>
+                <!-- 基于本身几何中心的偏移量和旋转量 -->
+                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+
+                <!-- 形状 -->
+                <geometry>
+                    <sphere radius="0.016"/>
+                </geometry>
+
+                <!-- 颜色 -->
+                <material name="yellow">
+                    <!-- 最后一个值是透明度，1表示不透明 -->
+                    <color rgba="1.0 1.0 0.0 0.8"/>
+                </material>
+            </visual>
+
+            <collision>
+                <!-- 基于本身几何中心的偏移量和旋转量 -->
+                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+
+                <!-- 形状 -->
+                <geometry>
+                    <sphere radius="0.016"/>
+                </geometry>
+
+                <!-- 颜色 -->
+                <material name="yellow">
+                    <!-- 最后一个值是透明度，1表示不透明 -->
+                    <color rgba="1.0 1.0 0.0 0.8"/>
+                </material>
+            </collision>
+            <!-- 惯性属性 -->
+            <xacro:sphere_inertia m="0.05" r="0.016" />
+        </link>
+
+        <joint name="${caster_name}_joint" type="fixed">
+            <!-- 连接的父部件 -->
+            <parent link="base_link"/>
+            <!-- 连接的子部件 -->
+            <child link="${caster_name}_link"/>
+            <!-- 基于父部件的偏移量和旋转量 -->
+            <origin xyz="${xyz}" rpy="0.0 0.0 0.0"/>
+        </joint>
+
+        <gazebo reference="${caster_name}_link">
+            <!-- 切向摩擦系数 -->
+            <mul value="0.0"/>
+            <!-- 法向摩擦系数 -->
+            <mu2 value="0.0"/>
+            <!-- 刚度系数 -->
+            <kp value="1000000000.0"/>
+            <!-- 阻尼系数 -->
+            <kd value="1.0"/>
+        </gazebo>
+
+    </xacro:macro>
+
+</robot>

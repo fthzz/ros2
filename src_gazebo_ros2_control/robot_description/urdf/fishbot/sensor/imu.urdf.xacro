@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro='http://www.ros.org/wiki/xacro' >
+    <!-- 引入惯性计算的xacro文件 -->
+    <xacro:include filename="$(find robot_description)/urdf/fishbot/common_inertia.xacro"/>
+    <xacro:macro name="imu_xacro" params="xyz">
+        <!-- imu子部件 -->
+        <link name="imu_link">
+            <!-- 部件的外观描述 -->
+            <visual>
+                <!-- 基于本身几何中心的偏移量和旋转量 -->
+                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+
+                <!-- 形状 -->
+                <geometry>
+                    <!-- 长方体 -->
+                    <box size="0.02 0.02 0.02"/>
+                </geometry>
+
+                <!-- 颜色 -->
+                <material name="black">
+                    <!-- 最后一个值是透明度，1表示不透明 -->
+                    <color rgba="0 0 0 0.5"/>
+                </material>
+            </visual>
+
+            <collision>
+                <!-- 基于本身几何中心的偏移量和旋转量 -->
+                <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+
+                <!-- 形状 -->
+                <geometry>
+                    <!-- 长方体 -->
+                    <box size="0.02 0.02 0.02"/>
+                </geometry>
+
+                <!-- 颜色 -->
+                <material name="black">
+                    <!-- 最后一个值是透明度，1表示不透明 -->
+                    <color rgba="0 0 0 0.5"/>
+                </material>
+            </collision>
+            <xacro:box_inertia m="0.05" w="0.02" h="0.02" d="0.02"/>
+        </link>
+
+        <joint name="imu_joint" type="fixed">
+            <!-- 连接的父部件 -->
+            <parent link="base_link"/>
+            <!-- 连接的子部件 -->
+            <child link="imu_link"/>
+            <!-- 基于父部件的偏移量和旋转量 -->
+            <origin xyz="${xyz}" rpy="0.0 0.0 0.0"/>
+        </joint>
+    </xacro:macro>
+
+</robot>
